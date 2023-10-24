@@ -1,16 +1,36 @@
-# This is a sample Python script.
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+x = np.array([1,2,3,4,5,6,7,8])
+y = x
+plt.figure()
+plt.scatter(x,y)
+plt.scatter(x[:2], y[:2], s = 70, c = 'violet', label = 'Tall')
+plt.scatter(x[2:], y[2:], s = 70, c = 'yellow', label = 'Short')
+plt.xlabel('number1')
+plt.ylabel('number2')
+plt.title('Title wow')
+
+plt.legend(loc = 'best', frameon = True, title = 'Legend my')
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+lineardata = np.array([1,2,3,4,5,6,7,8])
+expon = lineardata**2
+#plt.figure()
+plt.plot(lineardata, '-o', expon, '-o')
+plt.plot([22,44,55,125], '--r')
+plt.gca().fill_between(range(len(lineardata)), lineardata, expon, facecolor = 'orange', alpha = 0.15)
 
+from matplotlib.artist import Artist
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('Anatoliy')
+#
+# def rec(art, depth=0):
+#     if isinstance(art, Artist):
+#         print(" " * depth + str(art))
+#         for child in art.get_children():
+#             rec(child, depth + 2)
+#
+#
+# rec(f.legend())
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+plt.show()
