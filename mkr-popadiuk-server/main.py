@@ -1,6 +1,7 @@
 import socket
 import numpy as np
 import json
+import threading
 
 def matrix_multiply(matrix1, matrix2):
     result = np.dot(matrix1, matrix2)
@@ -11,7 +12,6 @@ def receive_data(client_socket):
     size_bytes = client_socket.recv(4)
     size = int.from_bytes(size_bytes, byteorder='big')
 
-    # Receive the data in chunks
     data_chunks = []
     while size > 0:
         chunk = client_socket.recv(min(size, 8192))
@@ -32,7 +32,7 @@ def send_response(client_socket, response_data):
         # Send the size of the data first
         client_socket.send(len(json_data).to_bytes(4, byteorder='big'))
 
-        # Send the data in chunks
+        # Send the data
         for i in range(0, len(json_data), 8192):
             client_socket.send(json_data[i:i+8192])
 
@@ -96,7 +96,8 @@ def start_server():
     while True:
         client_socket, addr = server_socket.accept()
         print(f"Accepted connection from {addr}")
-        handle_client(client_socket)
+        client_thread = threading.Thread(target=handle_client, args=(client_socket,))
+        client_thread.start()
 
 if __name__ == "__main__":
     start_server()
